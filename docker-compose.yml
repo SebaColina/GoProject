@@ -1,0 +1,55 @@
+# If you remove the version field
+services:
+  backend:
+    build:
+      context: ./notes-app-back
+      dockerfile: ./Dockerfile
+    container_name: backend
+    restart: always
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: user
+      DB_PASSWORD: userpassword
+      DB_NAME: mydatabase
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./notes-app-front
+      dockerfile: ./Dockerfile
+    container_name: frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpassword
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    volumes:
+      - db_data:/var/lib/mysql
+
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:
