@@ -1,4 +1,5 @@
-# If you remove the version field
+version: '3.8'  # Add the version field
+
 services:
   backend:
     build:
@@ -45,7 +46,7 @@ services:
       - app-network
     volumes:
       - db_data:/var/lib/mysql
-
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
 networks:
   app-network:

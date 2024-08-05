@@ -12,7 +12,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "sequelize": "^6.37.3",
+    "tedious": "^18.3.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"

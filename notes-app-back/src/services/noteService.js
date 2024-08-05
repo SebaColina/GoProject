@@ -1,5 +1,5 @@
 const Note = require('../models/noteModel');
 
 exports.getAllNotes = async () => {
-  return await Note.find();
+  return await true;//Note.find();
 };
