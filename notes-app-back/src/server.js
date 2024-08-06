@@ -1,9 +1,15 @@
 const app = require('./app');
 const port = process.env.PORT || 8080;
-//const dbConfig = require('./config/dbConfig');
+const sequelize = require('./config/dbConfig');
 
 // Database connection
-//dbConfig.connect();
+sequelize.sync()
+  .then(() => {
+    console.log('Database synchronized');
+  })
+  .catch(err => {
+    console.error('Error syncing database:', err);
+  });
 
 // Start the server
 app.listen(port, () => {
