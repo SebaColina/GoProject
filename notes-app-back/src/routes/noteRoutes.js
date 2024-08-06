@@ -3,6 +3,6 @@ const noteController = require('../controllers/noteController');
 
 const noteRoutes = express.Router();
 
-noteRoutes.get('/', noteController.getAllNotes);
+noteRoutes.get('/notes', noteController.getAllNotes);
 
 module.exports = noteRoutes;
