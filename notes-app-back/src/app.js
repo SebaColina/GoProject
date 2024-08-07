@@ -12,8 +12,4 @@ app.use(cors());  // Use cors middleware
 // Routes
 app.use('/', noteRoutes);
 
-//app.get('/', (req, res) => {
-//  res.send('Welcome to the Notes API');
-//});
-
 module.exports = app;

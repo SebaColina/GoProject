@@ -39,7 +39,7 @@ const App = () => {
     setContent(event.target.value)
   }
 
-  const submit = (event: React.FormEvent<HTMLFormElement>) => {
+  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Note edited.
     if(selectedNote != null){
@@ -53,12 +53,12 @@ const App = () => {
     }
     // Note added.
     else{
-      notes.push({
-        id: notes.length + 2,
-        title: title,
-        content: content
+      const response = await axios.post('http://localhost:8080/notes', {
+        title,
+        content
       });
-      setNotes([...notes])
+      const newNote = response.data;
+      setNotes([...notes, newNote])
     }
     setContent('');
     setTitle('');
