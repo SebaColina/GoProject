@@ -53,6 +53,7 @@ const App = () => {
     }
     // Note added.
     else{
+      console.warn("CREATING")
       const response = await axios.post('http://localhost:8080/notes', {
         title,
         content
@@ -77,9 +78,19 @@ const App = () => {
   }
 
   // Remove a note.
-  const handleRemove = (note: Note, event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleRemove = async (note: Note, event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    setNotes(notes.filter(n => n.id != note.id));
+    try {
+      console.warn("ELIMINATING")
+      const response = await axios.delete(`http://localhost:8080/notes/${note.id}`);
+      if (response.status === 200){
+        setNotes(notes.filter(n => n.id != note.id));
+      }else{
+        console.error('Error deleting note:', response.data.message);
+      }
+    } catch (error) {
+      console.error('Error deleting note:', error);
+    }
   }
 
   return (

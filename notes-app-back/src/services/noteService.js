@@ -14,8 +14,22 @@ exports.getAllNotes = async () => {
 exports.createNote = async (title, content) => {
   try {
     const result = await note.create({title, content});
-    return { id: result.insertId, title, content };
+    return result;
   } catch (error) {
     throw new Error('Error creating note: ' + error.message);
+  }
+};
+
+exports.deleteNoteById = async (id) => {
+  try {
+    const result = await note.destroy({
+      where: { id: id }
+    })
+    if (result === 0){
+      throw new error('Note not found');
+    }
+    return result;
+  } catch (error) {
+    throw new Error('Error deleting note: ' + error.message);
   }
 };
