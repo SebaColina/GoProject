@@ -40,3 +40,26 @@ exports.deleteNote = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.updateNote = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const newTitle = req.body.title;
+    const newContent = req.body.content;
+    console.log("HEREEEEEEE, ", newTitle)
+
+    // Ensure id is provided
+    if (!id) {
+      return res.status(400).json({ message: "Id is required" });
+    }
+    // Ensure title and content are provided
+    if (!newTitle || !newContent) {
+      return res.status(400).json({ message: "Title and content are required" });
+    }
+
+    await noteService.updateNote(id, newTitle, newContent);
+    res.status(200).json('Note updated successfully');
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
