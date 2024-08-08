@@ -14,6 +14,7 @@ const App = () => {
   const [content, setContent] = useState("");
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
+  const [noteEdited, setNoteEdited] = useState<Note | null>(null);
   // Mock data.
   useEffect(() => {
     // Fetch notes from the backend
@@ -27,7 +28,7 @@ const App = () => {
     };
 
     fetchNotes();
-  }, []);
+  }, [noteEdited]);
 
   // Change title.
   const handleTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,17 +44,20 @@ const App = () => {
     event.preventDefault();
     // Note edited.
     if(selectedNote != null){
-      const noteEdited = {
-        id: selectedNote.id,
+      const response = await axios.put(`http://localhost:8080/notes/${selectedNote.id}`,{
         title: title,
         content: content
+      });
+      if(response.status === 200){
+        setNoteEdited(response.data);
+        const newNotes = notes.map(note => note.id === selectedNote.id ? response.data : note);
+        setNotes(newNotes);
+      }else{
+        console.error('Error updating note:', response.data.message);
       }
-      const newNotes = notes.map(note => note.id === selectedNote.id ? noteEdited : note);
-      setNotes(newNotes);
     }
     // Note added.
     else{
-      console.warn("CREATING")
       const response = await axios.post('http://localhost:8080/notes', {
         title,
         content
@@ -81,7 +85,6 @@ const App = () => {
   const handleRemove = async (note: Note, event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     try {
-      console.warn("ELIMINATING")
       const response = await axios.delete(`http://localhost:8080/notes/${note.id}`);
       if (response.status === 200){
         setNotes(notes.filter(n => n.id != note.id));
