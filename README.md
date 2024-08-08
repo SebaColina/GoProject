@@ -18,5 +18,5 @@ Follow these instructions to get your app up and running.
 This command will build the Docker images and start the containers as defined in the docker-compose.yml file.
 
 ## Testing ##
-- **Frontend**: Open your web browser and go to http://localhost:3000 to access the frontend of the application.
-- **Backend**: If applicable, access the backend service at http://localhost:8080.
+- **Frontend**: Open your web browser and go to localhost port 3000 by default to access the frontend of the application.
+- **Backend**: If applicable, access the backend service at localhost port 8080 by default.
