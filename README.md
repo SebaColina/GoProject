@@ -12,7 +12,11 @@ Follow these instructions to get your app up and running.
 
 ### Installation
 
-**Clone the Repository**
-**Navigate to the project directory**
-**Build and start the Docker containers**: Execute: docker-compose up --build
+**Clone the Repository**: `git clone https://github.com/yourusername/your-repo.git`
+**Navigate to the project directory**: `cd your-repo`
+**Build and start the Docker containers running**: `docker-compose up --build`
 This command will build the Docker images and start the containers as defined in the docker-compose.yml file.
+
+## Testing ##
+- **Frontend**: Open your web browser and go to http://localhost:3000 to access the frontend of the application.
+- **Backend**: If applicable, access the backend service at http://localhost:8080.
