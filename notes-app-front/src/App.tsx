@@ -15,6 +15,7 @@ const App = () => {
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
   const [noteEdited, setNoteEdited] = useState<Note | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   // Mock data.
   useEffect(() => {
     // Fetch notes from the backend
@@ -87,7 +88,7 @@ const App = () => {
     try {
       const response = await axios.delete(`http://localhost:8080/notes/${note.id}`);
       if (response.status === 200){
-        setNotes(notes.filter(n => n.id != note.id));
+        setNotes(notes.filter(n => n.id !== note.id));
       }else{
         console.error('Error deleting note:', response.data.message);
       }
@@ -96,47 +97,72 @@ const App = () => {
     }
   }
 
-  return (
-    <div className="app-container">
-      <form 
-        className="note-form"
-        onSubmit={submit}>
-        <input 
-          placeholder="Title" 
-          required 
-          onChange={handleTitle} 
-          value={title}/>
-        <textarea 
-          placeholder="Content" 
-          rows={10} 
-          required
-          onChange={handleContent} 
-          value={content}
-         />
-        {
-          selectedNote ? (
-            <div className="edit-buttons">
-              <button type="submit">Save</button>
-              <button onClick={handleCancel}>Cancel</button>
-            </div>
-          ) : (
-            <button type="submit">Add Note</button>
-          )
-        }
-      </form>
-      <div className='notes-grid'>
-        {notes.map((note) => (
-        <div className="note-item" key={note.id}
-          onClick={() => onClickNote(note)}>
-          <div className="notes-header">
-            <button onClick={(event) => handleRemove(note, event)}>x</button>
-          </div>
-          <h2>{note.title}</h2>
-          <p>{note.content}</p>
-        </div>))}
-      </div>
-    </div>
+  const handleSearchChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredNotes = notes.filter(note =>
+    note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    note.content.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  return (
+    <div className="app-container flex-row box">
+      <div className="textarea-container">
+        <textarea 
+          name="nananana" 
+          id="" 
+          placeholder="Search..." 
+          rows={4} 
+          style={{ width: "100%" }}
+          onChange={handleSearchChange}
+        />
+      </div>
+      <div className='box2'>
+        <div className="note-form-container" style={{marginRight: '20px'}}>
+          <form 
+            className="note-form"
+            onSubmit={submit}>
+            <input 
+              placeholder="Title" 
+              required 
+              onChange={handleTitle} 
+              value={title}/>
+            <textarea 
+              placeholder="Content" 
+              rows={10} 
+              required
+              onChange={handleContent} 
+              value={content}
+            />
+            {
+              selectedNote ? (
+                <div className="edit-buttons">
+                  <button type="submit">Save</button>
+                  <button onClick={handleCancel}>Cancel</button>
+                </div>
+              ) : (
+                <button type="submit">Add Note</button>
+              )
+            }
+          </form>
+        </div>
+        <div className='notes-grid' style={{width: '-webkit-fill-available'}}>
+          {filteredNotes.map((note) => (
+          <div className="note-item" key={note.id}
+            onClick={() => onClickNote(note)}>
+            <div className="notes-header">
+              <button onClick={(event) => handleRemove(note, event)}>x</button>
+            </div>
+            <h2>{note.title}</h2>
+            <p>{note.content}</p>
+          </div>))}
+        </div>
+      </div>
+
+    </div>
+    
+  );  
 };
 
 export default App;
